@@ -8,6 +8,8 @@ app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///database/blog.db'
 
 db=SQLAlchemy(app)
 
+#--------------------------modelos-------------------------
+
 class Post(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     title=db.Column(db.String(50))
@@ -15,6 +17,15 @@ class Post(db.Model):
     author=db.Column(db.String(20))
     date_posted=db.Column(db.DateTime)
     content=db.Column(db.Text)
+
+
+class Commentary(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    nickname=db.Column(db.String(50))
+    content=db.Column(db.Text)
+    date_comment=db.Column(db.DateTime)
+
+
 
 ## VISTAS------------------------
 @app.route("/")
@@ -39,6 +50,10 @@ def contact():
 
 ##ADMIN-------------------
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 @app.route("/admin")
 def adminPanel():
     return render_template("admin-panel.html")
@@ -62,7 +77,39 @@ def addpost():
 @app.route("/views")
 def views():
     post=Post.query.all()
-    return render_template("views.html")
+    return render_template("views.html", posts=post)
+
+####----------------BORRAR -----------------------
+@app.route("/delete/<id>")
+def deletePost(id):
+    post=Post.query.filter_by(id=int(id)).delete()
+    db.session.commit()
+
+    return redirect(url_for('views'))
+
+@app.route("/seach/<id>")
+def seach(id):
+    post=Post.query.filter_by(id=int(id)).first()
+
+    return render_template("post", posts=post)
+
+
+@app.route("/edit/<id>")
+def editPost(id):
+    post=Post.query.filter_by(id=int(id)).first()
+
+    return render_template("edits.html",post=post)
+
+
+
+
+
+@app.route("/comment")
+def commentPost():
+    pass
+
+
+
 
 if __name__=="__main__":
     app.run(debug=True)

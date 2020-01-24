@@ -8,7 +8,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Clean Blog - Start Bootstrap Theme</title>
+  <title>{{post.title}}</title>
+  <script src="https://kit.fontawesome.com/56d63b1cf1.js" crossorigin="anonymous"></script>
 
   <!-- Bootstrap core CSS -->
   <link href="{{url_for('static', filename='boot.css')}}" rel="stylesheet">
@@ -24,7 +25,8 @@
 </head>
 
 <body>
-
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v5.0"></script>
  
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -80,8 +82,11 @@
       </div>
     </div>
   </article>
-
   <hr>
+ 
+
+  <div class="fb-comments" data-href="http://127.0.0.1:5000/post/{{post.id}}" data-width="100%" data-numposts="2"></div>
+  
 
   <!-- Footer -->
   <footer>
